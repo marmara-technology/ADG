@@ -1,42 +1,45 @@
+#include<Servo.h>
+
 int durum = 0;
 int i;
 int out = 0;
 //1. LAMBA
-int kirmizi1=0;
-int sari1=1;
-int yesil1 =2;
+int kirmizi1=2;
+int sari1=3;
+int yesil1 =4;
 //2. LAMBA
-int kirmizi2= 3;
-int sari2=4;
-int yesil2=5;
- int cikis =  13;
+int kirmizi2= 5;
+int sari2=6;
+int yesil2=7;
 // SENSÖRLER
-int s1 = 6;
-int s2 = 7;
-
+int s1 = 9;
+int s2 = 8;
 int sensor1=0;
 int sensor2=0;
-
+// servo
+Servo motor1;
+Servo motor2;
  void setup() {
   pinMode(kirmizi1,OUTPUT);
   pinMode(sari1,OUTPUT);
   pinMode(yesil1,OUTPUT);
-   pinMode(cikis,OUTPUT);
   pinMode(kirmizi2,OUTPUT);
   pinMode(sari2,OUTPUT);
   pinMode(yesil2,OUTPUT);
 
   pinMode(s1,INPUT);
   pinMode(s2,INPUT);
-  
+
+  motor1.attach(10);
+  motor2.attach(11);
 }
 
 void loop () {
-  digitalWrite(cikis,LOW);
   //SENSORLERİ KONTROL ET
 sensor1 = digitalRead(s1);
 sensor2 = digitalRead(s2);
 if(sensor1 == HIGH)  {
+motor1.write(180);
     digitalWrite(kirmizi1,HIGH);
     digitalWrite(yesil2,HIGH);
 
@@ -47,7 +50,8 @@ if(sensor1 == HIGH)  {
     digitalWrite(sari1,LOW);
     digitalWrite(sari2,LOW);
 }
-if(sensor2 == HIGH)  {
+else if(sensor2 == HIGH)  {
+  motor2.write(180);
   digitalWrite(kirmizi2,HIGH);
   digitalWrite(yesil1,HIGH);
  
@@ -57,7 +61,8 @@ if(sensor2 == HIGH)  {
  digitalWrite(sari1,LOW);
  digitalWrite(sari2,LOW);
 }
-if (sensor1==LOW && sensor2 == LOW) normal(10);
+if (sensor1==LOW && sensor2 == LOW) normal(30);
+
 }
 
 

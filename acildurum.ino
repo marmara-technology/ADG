@@ -4,18 +4,15 @@ int acil_durum = 0;
 long uzaklik1;
 long uzaklik2;
 int yol;
-int sensor1_cikis=2;
-int sensor2_cikis=3;
-int ambulans_kirmizi_led=4;
-
-int ambulans_mavi_led=6;
-int buzzer=7;
+int sensor1_cikis=3;
+int sensor2_cikis=2;
+int acil = 5;
 int trig1=8;
 int echo1=9;
 int trig2=10;
 int echo2=11;
 
-int adb = 13;
+int adb = 12;
 int i;
 int a=0;
 
@@ -30,36 +27,31 @@ long cm1,cm2,inc1,inc2;
   pinMode(adb,INPUT);
   pinMode(sensor1_cikis,OUTPUT);
   pinMode(sensor2_cikis,OUTPUT);
-  pinMode(ambulans_kirmizi_led,OUTPUT);
-  pinMode(ambulans_mavi_led,OUTPUT);
-  pinMode(buzzer,OUTPUT);
-  
 }
 void loop () {
-
-acil_durum = digitalRead(adb);  
+  
+acil_durum = digitalRead(adb); 
+ delay(100);
   if (acil_durum == HIGH) 
   {
-  ambulans();
     
-    //ses();  
     konumkontrol1();
     konumkontrol2();
    
-    if(uzaklik1>0 && uzaklik1 < 10)
+    if(uzaklik1>0 && uzaklik1 < 25 && uzaklik2>20)
       {
       digitalWrite(sensor1_cikis,HIGH); 
       digitalWrite(sensor2_cikis,LOW); 
       
       }
-     if ( uzaklik1>10)
+     if ( uzaklik1>25)
       {       
-  if(uzaklik2>0 && uzaklik2 < 10)
+  if(uzaklik2>0 && uzaklik2 < 25 && uzaklik1>25)
       {
       digitalWrite(sensor2_cikis,HIGH);
       digitalWrite(sensor1_cikis,LOW); 
       }
-   else if ( uzaklik2>10 || uzaklik1>10 )
+   else if ( uzaklik2>25 || uzaklik1>25 )
       {
           digitalWrite(sensor1_cikis,LOW); 
           digitalWrite(sensor2_cikis,LOW); 
@@ -67,7 +59,7 @@ acil_durum = digitalRead(adb);
       
   }
   
-}  
+}
 }
 int konumkontrol1() {
  
@@ -96,41 +88,8 @@ cevap2 = pulseIn(echo2, HIGH);
 uzaklik2 = cevap2 /29.1/2;
 Serial.println("İkinci sensör Uzaklik ");  
   Serial.println(uzaklik2);
+  Serial.println("\n");
   delay(200);
 
 return uzaklik2;
-}
-void ambulans()
-{
-for(i=0;i<4;i++){
-digitalWrite(ambulans_kirmizi_led,HIGH);
-delay(100);
-digitalWrite(ambulans_kirmizi_led,LOW);
-delay(100);
-digitalWrite(ambulans_mavi_led,HIGH);
-delay(100);
-digitalWrite(ambulans_mavi_led,LOW);
-delay(100);
-}
-}
-void ses()
-{
- 
-  for(a=700;a<800;a++)
-  {
-  tone(7,a);
-  delay(15);
-  
-  }
-  //  ambulans();
-  
-  for(a=800;a>700;a--)
-  {
-    
-  tone(7,a);
-  delay(15);
-   }
- acil_durum = digitalRead(adb);
- if(acil_durum == LOW) noTone(7);
-
 }
